@@ -4,9 +4,6 @@ const CACHE_KEY = 'nerkh_cache_v7';
 const CACHE_TIMESTAMP_KEY = 'nerkh_last_fetch_v7';
 const UPDATE_INTERVAL_MS = 10 * 60 * 1000; // 10 Minutes
 
-const NOBITEX_API = 'https://api.nobitex.ir/market/stats';
-const BRS_API_BASE = 'https://brsapi.ir/Api/Market/Gold_Currency.php';
-
 // Strict list of assets to display (Normalized to Uppercase for checking)
 const ALLOWED_SYMBOLS = [
   'USD', 'EUR', 'GBP', 'AED', // Fiat
@@ -108,7 +105,17 @@ export async function getPrices(forceRefresh = false): Promise<PriceAsset[]> {
 
 async function fetchNobitexData(): Promise<PriceAsset[]> {
   try {
-    const response = await fetch(NOBITEX_API);
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    const edgeUrl = `${supabaseUrl}/functions/v1/fetch-prices?source=nobitex`;
+    const response = await fetch(edgeUrl, {
+      headers: {
+        'Authorization': `Bearer ${anonKey}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
     if (!response.ok) return [];
     const data = await response.json();
     
@@ -150,7 +157,17 @@ async function fetchBrsData(): Promise<PriceAsset[]> {
   if (!apiKey) return [];
 
   try {
-    const response = await fetch(`${BRS_API_BASE}?key=${apiKey}`);
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    const edgeUrl = `${supabaseUrl}/functions/v1/fetch-prices?source=brsapi&apiKey=${encodeURIComponent(apiKey)}`;
+    const response = await fetch(edgeUrl, {
+      headers: {
+        'Authorization': `Bearer ${anonKey}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
     if (!response.ok) return [];
     const json = await response.json();
     
