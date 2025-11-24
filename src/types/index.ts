@@ -10,7 +10,7 @@ export interface PriceAsset {
   priceToman: number;
   change24h: number; // Percentage
   lastUpdated: string;
-  source: 'nerkh.io' | 'nobitex';
+  source: 'nerkh.io' | 'nobitex' | 'brsapi';
 }
 
 export interface AlertPreference {

@@ -1,5 +1,4 @@
 import { PriceAsset } from '@/types';
-import { MOCK_ASSETS } from '@/lib/mock-data';
 
 const CACHE_KEY = 'nerkh_cache_v7';
 const CACHE_TIMESTAMP_KEY = 'nerkh_last_fetch_v7';
