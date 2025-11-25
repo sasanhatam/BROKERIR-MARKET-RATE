@@ -33,7 +33,7 @@ Deno.serve(async (req: Request) => {
       }
 
       const brsResponse = await fetch(
-        `https://brsapi.ir/Api/Market/Gold_Currency.php?key=${apiKey}`
+        `https://brsapi.ir/Api/Market/Gold_Currency_Pro.php?key=${apiKey}&section=gold|currency|cryptocurrency`
       );
       data = await brsResponse.json();
     } else if (source === "nobitex") {
